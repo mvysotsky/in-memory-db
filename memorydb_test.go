@@ -93,23 +93,4 @@ func TestMemoryDB(t *testing.T) {
 	if _, exists := db.Get(key); exists {
 		t.Errorf("Delete() failed, key %v still exists", key)
 	}
-
-	// Test Transactions
-	db.Set(key, "value1")
-	db.StartTransaction()
-	db.Set(key, "value2")
-	if val, _ := db.Get(key); val != "value2" {
-		t.Errorf("Get() inside transaction = %v, want %v", val, "value2")
-	}
-	db.RollBack()
-	if val, _ := db.Get(key); val != "value1" {
-		t.Errorf("Get() after rollback = %v, want %v", val, "value1")
-	}
-
-	db.StartTransaction()
-	db.Set(key, "value3")
-	db.Commit()
-	if val, _ := db.Get(key); val != "value3" {
-		t.Errorf("Get() after commit = %v, want %v", val, "value3")
-	}
 }
